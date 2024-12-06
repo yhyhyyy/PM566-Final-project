@@ -1,5 +1,125 @@
 ---
 title: "PM566-Final-project"
+author: Haoyu Yu
+format:
+   html:
+     embed-resources: true
 ---
 
-This website is being used for Lab 12 and setting up for my final project
+```{r, echo = FALSE, message = FALSE}
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(gridExtra)
+library(knitr)
+library(plotly)
+salaries_data <- read.csv("salaries.csv")
+```
+
+## Description
+
+This project explores salary trends and influencing factors in the global AI and tech industry. Using a dataset that spans roles, experience levels, employment types, and locations, the analysis highlights key variables like job title, company size, remote work, and geography. Discover how these factors shape salary distributions and gain insights for career planning or competitive salary benchmarking. Access interactive visualizations and the full report for a deeper dive into the findings.
+
+This project raises two questions worth exploring and explains them after data quantification and in-depth analysis.
+
+<b> What are the key factors that influence salary levels in the global AI and tech industry, and how do these factors interact to shape salary？</b>
+
+<b> Whether there are more interactions between different factors related to salary.</b>
+
+Written report:
+
+The following is a visual analysis and preliminary conclusions of these two questions.
+
+## What are the key factors that influence salary levels in the global AI and tech industry, and how do these factors interact to shape salary？
+
+```{r, echo=FALSE}
+library(plotly)
+library(scales)
+plot <- ggplot(salaries_data, aes(x = experience_level, y = salary_in_usd, fill = experience_level)) +
+  geom_boxplot() +
+  labs(title = "Figure 1:Relationship Between Experience Level and Salary", 
+       x = "Experience Level", 
+       y = "Salary (USD)") +
+  scale_y_continuous(labels = label_comma())+
+  theme_minimal()
+
+interactive_plot <- ggplotly(plot)
+interactive_plot
+```
+
+EN: Entry-level / Junior, EX: Executive-level / Director, MI: Mid-level / Intermediate, SE: Senior-level / Expert
+
+<b>Figure 1:</b> There is a strong correlation between salary and experience_level. EX has the highest salary, SE has the second highest salary and EN has the lowest salary. It is reasonable that income levels increase with experience levels.
+
+```{r, echo=FALSE,warning=FALSE}
+plot <- ggplot(salaries_data, aes(x = employment_type, y = salary_in_usd, fill = employment_type)) +
+  stat_summary(fun = "mean", geom = "bar") +
+  labs(title = "Figure 2:Mean Salary by Employment Type", x = "Employment Type", y = "Mean Salary (USD)") +
+  theme_minimal()
+interactive_plot <- ggplotly(plot)
+interactive_plot
+```
+CT: Contract, FL: Freelance, FT: Full-time, PT: Part-time
+
+<b>Figure 2:</b>Full-time job has the highest salary, the contract job has the second highest salary and freelance job has the lowest salary. The result is reasonable and explain that salary levels are closely related to employment types.
+
+```{r, echo=FALSE}
+salary_by_year <- salaries_data %>%
+  group_by(work_year) %>% 
+  summarise(mean_salary = mean(salary_in_usd, na.rm = TRUE))  
+plot <- ggplot(salary_by_year, aes(x = work_year, y = mean_salary)) +
+  geom_line(color = "blue", size = 1.2) +  
+  geom_point(color = "red", size = 2) + 
+  labs(title = "Figure 3:Average Salary by Year", x = "Year", y = "Average Salary (USD)") +
+  theme_minimal()
+interactive_plot <- ggplotly(plot)
+
+interactive_plot
+```
+<b>Figure 3:</b>The average salary shows an overall upward trend over time, and the upward trend slows down from 2021 to 2024.
+
+## Whether there are more interactions between different factors related to salary
+
+```{r,echo=FALSE}
+interaction_analysis <- salaries_data %>%
+  group_by(company_size, employment_type) %>%
+  summarise(mean_salary = mean(salary_in_usd, na.rm = TRUE), .groups = "drop")
+
+plot <- ggplot(interaction_analysis, aes(x = employment_type, y = mean_salary, fill = employment_type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  facet_wrap(~ company_size) +
+  labs(
+    title = "Figure 4:Mean Salary by Employment Type and Company Size",
+    x = "Employment Type",
+    y = "Mean Salary (USD)"
+  ) +
+  theme_minimal()
+interactive_plot <- ggplotly(plot)
+
+interactive_plot
+```
+L: more than 250 employees, M: 50 to 250 employees, S: less than 50 employees
+
+<b>Figure 4:</b>The average salary of FT and CT is much higher than the other two, especially in large companies. In both large and medium-sized companies, FT wages are higher than CT wages, but in small companies, CT salaries are higher than FT salaries This may be because small companies will offer short-term, high-paying contracts to attract employees when there are projects, while long-term employees are paid less than these contract workers.
+```{r,echo=FALSE}
+year_employment_data <- salaries_data %>%
+  group_by(work_year, employment_type) %>%
+  summarise(mean_salary = mean(salary_in_usd, na.rm = TRUE), .groups = "drop")
+
+interactive_plot <- plot_ly(
+  year_employment_data,
+  x = ~work_year,     
+  y = ~mean_salary,         
+  color = ~employment_type, 
+  type = 'scatter',        
+  mode = 'lines+markers'    
+) %>%
+  layout(
+    title = "Figure 5:Mean Salary by Work Year and Employment Type",
+    xaxis = list(title = "Work Year"),
+    yaxis = list(title = "Mean Salary (USD)"),
+    legend = list(title = list(text = "Employment Type"))
+  )
+interactive_plot
+```
+<b>Figure 5:</b>The average salary of FT shows a steady growth trend, rising year by year from 2020 to 2024. In 2021, the average salary of CT shows a clear peak, which is much higher than other years. The salary levels of the two employment types of FL and PT remain relatively low throughout the period. The salary peak of CT in 2021 may reflect a temporary surge in demand in certain specific industries or economic environments, such as an increase in project-based work.

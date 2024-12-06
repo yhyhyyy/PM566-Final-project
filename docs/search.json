@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "PM566-Final-project",
     "section": "",
-    "text": "This website is being used for Lab 12 and setting up for my final project"
+    "text": "This project explores salary trends and influencing factors in the global AI and tech industry. Using a dataset that spans roles, experience levels, employment types, and locations, the analysis highlights key variables like job title, company size, remote work, and geography. Discover how these factors shape salary distributions and gain insights for career planning or competitive salary benchmarking. Access interactive visualizations and the full report for a deeper dive into the findings.\nThis project raises two questions worth exploring and explains them after data quantification and in-depth analysis.\n What are the key factors that influence salary levels in the global AI and tech industry, and how do these factors interact to shape salary？\n Whether there are more interactions between different factors related to salary.\nWritten report:\nThe following is a visual analysis and preliminary conclusions of these two questions."
   },
   {
     "objectID": "about.html",
@@ -12,5 +12,26 @@
     "title": "About",
     "section": "",
     "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "index.html#description",
+    "href": "index.html#description",
+    "title": "PM566-Final-project",
+    "section": "",
+    "text": "This project explores salary trends and influencing factors in the global AI and tech industry. Using a dataset that spans roles, experience levels, employment types, and locations, the analysis highlights key variables like job title, company size, remote work, and geography. Discover how these factors shape salary distributions and gain insights for career planning or competitive salary benchmarking. Access interactive visualizations and the full report for a deeper dive into the findings.\nThis project raises two questions worth exploring and explains them after data quantification and in-depth analysis.\n What are the key factors that influence salary levels in the global AI and tech industry, and how do these factors interact to shape salary？\n Whether there are more interactions between different factors related to salary.\nWritten report:\nThe following is a visual analysis and preliminary conclusions of these two questions."
+  },
+  {
+    "objectID": "index.html#what-are-the-key-factors-that-influence-salary-levels-in-the-global-ai-and-tech-industry-and-how-do-these-factors-interact-to-shape-salary",
+    "href": "index.html#what-are-the-key-factors-that-influence-salary-levels-in-the-global-ai-and-tech-industry-and-how-do-these-factors-interact-to-shape-salary",
+    "title": "PM566-Final-project",
+    "section": "What are the key factors that influence salary levels in the global AI and tech industry, and how do these factors interact to shape salary？",
+    "text": "What are the key factors that influence salary levels in the global AI and tech industry, and how do these factors interact to shape salary？\n\n\n\n\n\n\nEN: Entry-level / Junior, EX: Executive-level / Director, MI: Mid-level / Intermediate, SE: Senior-level / Expert\nFigure 1: There is a strong correlation between salary and experience_level. EX has the highest salary, SE has the second highest salary and EN has the lowest salary. It is reasonable that income levels increase with experience levels.\n\n\n\n\n\n\nCT: Contract, FL: Freelance, FT: Full-time, PT: Part-time\nFigure 2:Full-time job has the highest salary, the contract job has the second highest salary and freelance job has the lowest salary. The result is reasonable and explain that salary levels are closely related to employment types.\n\n\nWarning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.\nℹ Please use `linewidth` instead.\n\n\n\n\n\n\nFigure 3:The average salary shows an overall upward trend over time, and the upward trend slows down from 2021 to 2024."
+  },
+  {
+    "objectID": "index.html#whether-there-are-more-interactions-between-different-factors-related-to-salary",
+    "href": "index.html#whether-there-are-more-interactions-between-different-factors-related-to-salary",
+    "title": "PM566-Final-project",
+    "section": "Whether there are more interactions between different factors related to salary",
+    "text": "Whether there are more interactions between different factors related to salary\n\n\n\n\n\n\nL: more than 250 employees, M: 50 to 250 employees, S: less than 50 employees\nFigure 4:The average salary of FT and CT is much higher than the other two, especially in large companies. In both large and medium-sized companies, FT wages are higher than CT wages, but in small companies, CT salaries are higher than FT salaries This may be because small companies will offer short-term, high-paying contracts to attract employees when there are projects, while long-term employees are paid less than these contract workers.\n\n\n\n\n\n\nFigure 5:The average salary of FT shows a steady growth trend, rising year by year from 2020 to 2024. In 2021, the average salary of CT shows a clear peak, which is much higher than other years. The salary levels of the two employment types of FL and PT remain relatively low throughout the period. The salary peak of CT in 2021 may reflect a temporary surge in demand in certain specific industries or economic environments, such as an increase in project-based work."
   }
 ]

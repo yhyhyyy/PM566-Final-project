@@ -1,0 +1,170 @@
+---
+title: "Final Report"
+author: "Haoyu Yu"
+format: pdf
+editor: visual
+---
+
+# Introduction
+
+As the AI and tech industry continues to grow, understanding salary distribution and the factors that influence it is crucial for both employers and employees. Several variables can impact salary, such as experience level, remote work, job title, company size, and geographical location. For organizations, knowing these factors can help in offering competitive salaries, while for professionals, it assists in career planning and salary negotiations. The dataset used in this analysis contains salary information for individuals working in the global AI and tech industry, spanning different roles, experience levels, employment types, and locations. The dataset includes data points such as salary (in both local currency and converted to USD), remote work ratios, company sizes, and the employee’s country of residence. The following is an explanation of the important variables in the dataset to better understand the results.
+
+| Variable         | Description                                                                 |
+|------------------|-----------------------------------------------------------------------------|
+| Work\_year        | The year the salary was paid                                               |
+| Experience\_level | The experience level in the job during the year:                          |
+|                  | - EN: Entry-level / Junior                                                |
+|                  | - MI: Mid-level / Intermediate                                            |
+|                  | - SE: Senior-level / Expert                                               |
+|                  | - EX: Executive-level / Director                                          |
+| Employment\_type  | The type of employment for the role:                                      |
+|                  | - PT: Part-time                                                           |
+|                  | - FT: Full-time                                                           |
+|                  | - CT: Contract                                                            |
+|                  | - FL: Freelance                                                           |
+| Remote\_ratio     | The amount of work done remotely:                                         |
+|                  | - 0: No remote work (<20%)                                                |
+|                  | - 50: Partially remote/hybrid                                             |
+|                  | - 100: Fully remote (>80%)                                                |
+| Company\_size     | The number of people working in the company:                              |
+|                  | - S: Small (<50 employees)                                                |
+|                  | - M: Medium (50-250 employees)                                            |
+|                  | - L: Large (>250 employees)                                               |
+
+Based on this dataset, two questions worth exploring are proposed：
+1. What are the key factors that influence salary levels in the global AI and tech industry, and how do these factors interact to shape salary？
+2. Whether there are more interactions between different factors related to salary.
+
+# method
+
+## Data Acquisition
+
+The dataset used in this analysis was obtained from the website [AI Jobs Salaries](https://aijobs.net/salaries/download/), which provides detailed salary data for various roles in the AI and tech industry. The dataset includes variables such as work year, experience level, job titles, salaries in local currencies and converted to USD, remote work ratios, company size, and employee location.
+
+## Data Cleaning and Wrangling
+
+Using `dim(salaries_data)` function to determine the dimensions of the dataset. The dataset contains 53,841 pieces of salary data and 11 variables. Using `str(salaries_data)` to determine the data type of each variable. Using `head(salaries_data)` and `tail(salaries_data)` to observe the first few rows and last few rows of data. And then, using `colSums()` and `is.na(salaries_data)` functions to view missing data in the dataset. There are no missing data in this dataset.Using `summary(salaries_data)` to check the statistical results of the dataset and look for any unreasonable data.
+
+By observing the dataset, I found that the `job_title` variable is not convenient for statistical analysis because the title of each job is different. The `salary` variable and `salary_currency` variable can be replaced by `salary_in_usd` variable. Therefore, delete `job_title`, `salary` and `salary_currency` variables, making the data set more concise.
+
+Since variables `experience_level`, `remote_ratio`,`company_size` and `employee_residence` are categorical variables, these variables are created as factors to facilitate subsequent calls.
+
+# Results
+
+## Factors that affect salary
+```{r, echo=FALSE, message=FALSE}
+salaries_data <- read.csv("salaries.csv")
+library(plotly)
+library(scales)
+ggplot(salaries_data, aes(x = experience_level, y = salary_in_usd, fill = experience_level)) +
+  geom_boxplot() +
+  labs(title = "Figure 1:Relationship Between Experience Level and Salary", 
+       x = "Experience Level", 
+       y = "Salary (USD)",
+       caption = "EN: Entry-level / Junior\nEX: Executive-level / Director\nMI: Mid-level / Intermediate\nSE: Senior-level / Expert") +
+  scale_y_continuous(labels = label_comma())+
+  theme_minimal()+
+  theme(
+    plot.caption = element_text(size = 10, face = "italic", hjust = 0)
+  )
+```
+<b>Figure 1:</b> The box plot illustrates the relationship between experience levels and salary in the global AI and tech industry. Entry-level (EN) employees have the lowest median salary and the narrowest range, indicating a lower variation in earnings for junior positions. Executive-level (EX) employees exhibit the highest median salary and the largest salary range, reflecting a significant premium for leadership roles and strategic expertise. Mid-level (MI) salaries are slightly lower than Senior-level (SE) salaries but demonstrate a narrower range. Senior-level (SE) employees earn significantly more than entry-level (EN) positions and represent a bridge between managerial and technical expertise. The salary data aligns with industry norms where experience strongly correlates with potential salaries
+
+```{r, echo=FALSE,warning=FALSE}
+ggplot(salaries_data, aes(x = employment_type, y = salary_in_usd, fill = employment_type)) +
+  stat_summary(fun = "mean", geom = "bar") +
+  labs(title = "Figure 2:Mean Salary by Employment Type", 
+       x = "Employment Type", 
+       y = "Mean Salary (USD)",
+       caption = "CT: Contract\nFL: Freelance\nFT: Full-time\nPT: Part-time") +
+  theme_minimal() +
+  theme(
+    plot.caption = element_text(size = 10, face = "italic", hjust = 0)
+  )
+```
+<b>Figure 2:</b> Full-time employees earn the highest mean salary among all employment types. This is likely due to the stability and benefits associated with full-time roles. Contract workers have the second-highest mean salary. This reflects the premium often paid for specialized or short-term expertise. Freelancers earn the lowest mean salary, while part-time workers earn slightly more than freelancers but significantly less than full-time or contract workers. This could be due to fewer hours worked or the lack of long-term stability. The data suggests that the type of employment significantly impacts salary levels, with more stable employment types commanding higher pay.
+
+```{r, echo=FALSE, warning=FALSE}
+salary_by_year <- salaries_data %>%
+  group_by(work_year) %>% 
+  summarise(mean_salary = mean(salary_in_usd, na.rm = TRUE))  
+ggplot(salary_by_year, aes(x = work_year, y = mean_salary)) +
+  geom_line(color = "blue", size = 1.2) +  
+  geom_point(color = "red", size = 2) + 
+  labs(title = "Figure 3:Average Salary by Year", x = "Year", y = "Average Salary (USD)") +
+  theme_minimal()
+```
+<b>Figure 3:</b> The average salary shows a steady increase from 2021 to 2024, with a particularly sharp rise between 2021 and 2022. The slower growth from 2023 to 2024 indicates a potential stabilization in salary increments. However, the slight decrease in 2021 compared to 2020 reflects the changing dynamics of the industry, which may be the impact of covid 19. The continuous increase in average salaries reflects the growing demand for skilled professionals in the AI and tech industry.
+
+```{r, echo=FALSE}
+library(knitr)
+ggplot(salaries_data, aes(x = company_size, y = salary_in_usd, fill = company_size)) +
+  geom_boxplot() +
+  labs(title = "Figure4:Company Size and Salary", 
+       x = "Company Size", 
+       y = "Salary (USD)",
+       caption = "L: more than 250 employees\nM: 50 to 250 employees\nS: less than 50 employees") +
+  theme_minimal() +
+  theme(
+    plot.caption = element_text(size = 10, face = "italic", hjust = 0)
+  )
+
+salary_stats_by_company_size <- salaries_data %>%
+  group_by(company_size) %>% 
+  summarise(
+    mean_salary = mean(salary_in_usd, na.rm = TRUE),  
+    median_salary = median(salary_in_usd, na.rm = TRUE),  
+    salary_sd = sd(salary_in_usd, na.rm = TRUE), 
+    min_salary = min(salary_in_usd, na.rm = TRUE), 
+    max_salary = max(salary_in_usd, na.rm = TRUE), 
+    count = n()  
+  ) %>%
+  arrange(desc(mean_salary)) 
+
+kable(t(salary_stats_by_company_size), caption = "Table1:Salary Statistics by Company Size (Mean, Median, SD, Min, Max, Count)")
+```
+<b>Figure 4:</b>Medium-sized companies have the highest average salary (\$160,086.66) among all company sizes, followed by large companies with an average salary of \$152,341.53. Small companies pay significantly less, with an average salary of \$87,671.74. Medium-sized companies exhibit the widest salary range, with a minimum of \$15,000 and a maximum of \$800,000. Large companies have a narrower salary range, with a maximum salary of \$423,000. Small companies show the most limited salary range and lower variability, as evidenced by their lower standard deviation.
+
+## interactions between different factors
+```{r,echo=FALSE}
+interaction_analysis <- salaries_data %>%
+  group_by(company_size, employment_type) %>%
+  summarise(mean_salary = mean(salary_in_usd, na.rm = TRUE), .groups = "drop")
+
+ggplot(interaction_analysis, aes(x = employment_type, y = mean_salary, fill = employment_type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  facet_wrap(~ company_size) +
+  labs(
+    title = "Figure 5:Mean Salary by Employment Type and Company Size",
+    x = "Employment Type",
+    y = "Mean Salary (USD)",
+    caption = "L: more than 250 employees\nM: 50 to 250 employees\nS: less than 50 employees") +
+  theme_minimal() +
+  theme(
+    plot.caption = element_text(size = 10, face = "italic", hjust = 0)
+  )
+```
+<b>Figure 5:</b>The average salary of FT and CT is much higher than the other two, especially in large companies. In both large and medium-sized companies, FT wages are higher than CT wages, but in small companies, CT salaries are higher than FT salaries This may be because small companies will offer short-term, high-paying contracts to attract employees when there are projects, while long-term employees are paid less than these contract workers.
+
+```{r,echo=FALSE}
+year_employment_data <- salaries_data %>%
+  group_by(work_year, employment_type) %>%
+  summarise(mean_salary = mean(salary_in_usd, na.rm = TRUE), .groups = "drop")
+
+interactive_plot <- plot_ly(
+  year_employment_data,
+  x = ~work_year,     
+  y = ~mean_salary,         
+  color = ~employment_type, 
+  type = 'scatter',        
+  mode = 'lines+markers'    
+) %>%
+  layout(
+    title = "Figure 6:Mean Salary by Work Year and Employment Type",
+    xaxis = list(title = "Work Year"),
+    yaxis = list(title = "Mean Salary (USD)"),
+    legend = list(title = list(text = "Employment Type")) 
+  )
+interactive_plot
+```
+<b>Figure 6:</b>The average salary of FT shows a steady growth trend, rising year by year from 2020 to 2024. In 2021, the average salary of CT shows a clear peak, which is much higher than other years. The salary levels of the two employment types of FL and PT remain relatively low throughout the period. The salary peak of CT in 2021 may reflect a temporary surge in demand in certain specific industries or economic environments, such as an increase in project-based work.
