@@ -30,6 +30,9 @@ Written report:
 
 The following is a visual analysis and preliminary conclusions of these two questions.
 
+###Download
+You can download the PDF file by clicking [here](https://github.com/yhyhyyy/PM566-Final-project/raw/main/docs/Final_Report.pdf)
+
 ## What are the key factors that influence salary levels in the global AI and tech industry, and how do these factors interact to shape salary？
 
 ```{r, echo=FALSE}
