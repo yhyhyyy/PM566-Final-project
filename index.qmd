@@ -30,15 +30,13 @@ This project explores salary trends and influencing factors in the global AI and
 
 This project raises two questions worth exploring and explains them after data quantification and in-depth analysis.
 
+The following is a visual analysis and preliminary conclusions of these two questions.
+
 <b> What are the key factors that influence salary levels in the global AI and tech industry, and how do these factors interact to shape salary？</b>
 
 <b> Whether there are more interactions between different factors related to salary.</b>
 
-Written report:
-
-The following is a visual analysis and preliminary conclusions of these two questions.
-
-## Download
+## Written Report
 You can download the whole final project written report by clicking [here](https://github.com/yhyhyyy/PM566-Final-project/raw/main/docs/Final_Report.pdf)
 
 ## What are the key factors that influence salary levels in the global AI and tech industry, and how do these factors interact to shape salary？
