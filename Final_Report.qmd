@@ -96,7 +96,7 @@ ggplot(salary_by_year, aes(x = work_year, y = mean_salary)) +
 ```
 <b>Figure 3:</b> The average salary shows a steady increase from 2021 to 2024, with a particularly sharp rise between 2021 and 2022. The slower growth from 2023 to 2024 indicates a potential stabilization in salary increments. However, the slight decrease in 2021 compared to 2020 reflects the changing dynamics of the industry, which may be the impact of covid 19. The continuous increase in average salaries reflects the growing demand for skilled professionals in the AI and tech industry.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE,message=FALSE}
 library(knitr)
 library(dplyr)
 library(ggplot2)
@@ -125,7 +125,7 @@ salary_stats_by_company_size <- salaries_data %>%
   arrange(desc(mean_salary)) 
 kable(
   t(salary_stats_by_company_size), 
-  caption = "Table1: Salary Statistics by Company Size (Mean, Median, SD, Min, Max, Count)"
+  caption = "Salary Statistics by Company Size (Mean, Median, SD, Min, Max, Count)"
 )
 
 ```
