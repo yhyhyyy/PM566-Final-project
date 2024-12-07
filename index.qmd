@@ -114,7 +114,7 @@ plot <- ggplot(year_company_data, aes(x = work_year, y = mean_salary, color = co
   geom_line(size = 1.2) +  
   geom_point(size = 3) + 
   labs(
-    title = "Mean Salary by Work Year and Company Size",
+    title = "Figure%: Mean Salary by Work Year and Company Size",
     x = "Work Year",
     y = "Mean Salary (USD)",
     color = "Company Size") +
@@ -124,4 +124,5 @@ interactive_plot
 ```
 L: more than 250 employees, M: 50 to 250 employees, S: less than 50 employees
 
+<b>Figure 5:</b> From 2021 to 2024, the average salary of small companies is much lower than that of medium and large companies. The salary curve of medium and large companies is basically the same over time, and the growth trend is also greater than that of small companies. This shows that in the field of artificial intelligence, medium and large companies are better than small companies in terms of salary level and development prospects.
 
