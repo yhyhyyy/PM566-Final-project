@@ -214,3 +214,7 @@ This report mainly discusses the factors that affect wages in the field of artif
 
 # Reference
 1. The Global AI, ML, Data Science Salary Index for 2024. (n.d.). aijobs.net. https://aijobs.net/salaries/
+
+2. Staff, C. (2024, March 19). Artificial Intelligence salary: Your guide to AI pay in 2024. Coursera. https://www.coursera.org/articles/artificial-intelligence-salary
+
+3. Torres, R. (2024). Generative AI skills bring nearly 50% salary bump: Indeed. Healthcare Dive.
