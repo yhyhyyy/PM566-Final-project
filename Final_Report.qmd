@@ -157,11 +157,9 @@ ggplot(interaction_analysis, aes(x = employment_type, y = mean_salary, fill = em
 year_employment_data <- salaries_data %>%
   group_by(work_year, employment_type) %>%
   summarise(mean_salary = mean(salary_in_usd, na.rm = TRUE), .groups = "drop")
-
-# 使用 ggplot2 绘制静态折线图
 ggplot(year_employment_data, aes(x = work_year, y = mean_salary, color = employment_type, group = employment_type)) +
-  geom_line(size = 1.2) +  # 折线
-  geom_point(size = 3) +   # 数据点
+  geom_line(size = 1.2) +  
+  geom_point(size = 3) +   
   labs(
     title = "Figure 6: Mean Salary by Work Year and Employment Type",
     x = "Work Year",
