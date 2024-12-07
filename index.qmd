@@ -16,6 +16,14 @@ library(plotly)
 salaries_data <- read.csv("salaries.csv")
 ```
 
+```{r, echo = FALSE, message = FALSE, eval=FALSE}
+salaries_data <- subset(salaries_data, select = -c(job_title, salary, salary_currency))
+salaries_data$experience_level <- as.factor(salaries_data$experience_level)
+salaries_data$remote_ratio <- as.factor(salaries_data$remote_ratio)
+salaries_data$company_size <- as.factor(salaries_data$company_size)
+salaries_data$employee_residence <- as.factor(salaries_data$employee_residence)
+```
+
 ## Description
 
 This project explores salary trends and influencing factors in the global AI and tech industry. Using a dataset that spans roles, experience levels, employment types, and locations, the analysis highlights key variables like job title, company size, remote work, and geography. Discover how these factors shape salary distributions and gain insights for career planning or competitive salary benchmarking. Access interactive visualizations and the full report for a deeper dive into the findings.
@@ -31,7 +39,7 @@ Written report:
 The following is a visual analysis and preliminary conclusions of these two questions.
 
 ## Download
-You can download the PDF file by clicking [here](https://github.com/yhyhyyy/PM566-Final-project/raw/main/docs/Final_Report.pdf)
+You can download the whole final project written report by clicking [here](https://github.com/yhyhyyy/PM566-Final-project/raw/main/docs/Final_Report.pdf)
 
 ## What are the key factors that influence salary levels in the global AI and tech industry, and how do these factors interact to shape salary？
 
