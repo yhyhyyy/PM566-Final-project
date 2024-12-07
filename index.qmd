@@ -120,7 +120,7 @@ plot <- ggplot(year_company_data, aes(x = work_year, y = mean_salary, color = co
   geom_line(size = 1.2) +  
   geom_point(size = 3) + 
   labs(
-    title = "Figure%: Mean Salary by Work Year and Company Size",
+    title = "Figure5: Mean Salary by Work Year and Company Size",
     x = "Work Year",
     y = "Mean Salary (USD)",
     color = "Company Size") +
