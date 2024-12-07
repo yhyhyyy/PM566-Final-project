@@ -30,12 +30,12 @@ Written report:
 
 The following is a visual analysis and preliminary conclusions of these two questions.
 
-###Download
+## Download
 You can download the PDF file by clicking [here](https://github.com/yhyhyyy/PM566-Final-project/raw/main/docs/Final_Report.pdf)
 
 ## What are the key factors that influence salary levels in the global AI and tech industry, and how do these factors interact to shape salary？
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE}
 library(plotly)
 library(scales)
 plot <- ggplot(salaries_data, aes(x = experience_level, y = salary_in_usd, fill = experience_level)) +
@@ -66,7 +66,7 @@ CT: Contract, FL: Freelance, FT: Full-time, PT: Part-time
 
 <b>Figure 2:</b>Full-time job has the highest salary, the contract job has the second highest salary and freelance job has the lowest salary. The result is reasonable and explain that salary levels are closely related to employment types.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE}
 salary_by_year <- salaries_data %>%
   group_by(work_year) %>% 
   summarise(mean_salary = mean(salary_in_usd, na.rm = TRUE))  
@@ -104,25 +104,24 @@ interactive_plot
 L: more than 250 employees, M: 50 to 250 employees, S: less than 50 employees
 
 <b>Figure 4:</b>The average salary of FT and CT is much higher than the other two, especially in large companies. In both large and medium-sized companies, FT wages are higher than CT wages, but in small companies, CT salaries are higher than FT salaries This may be because small companies will offer short-term, high-paying contracts to attract employees when there are projects, while long-term employees are paid less than these contract workers.
-```{r,echo=FALSE}
-year_employment_data <- salaries_data %>%
-  group_by(work_year, employment_type) %>%
+
+```{r, echo=FALSE}
+year_company_data <- salaries_data %>%
+  group_by(work_year, company_size) %>%
   summarise(mean_salary = mean(salary_in_usd, na.rm = TRUE), .groups = "drop")
 
-interactive_plot <- plot_ly(
-  year_employment_data,
-  x = ~work_year,     
-  y = ~mean_salary,         
-  color = ~employment_type, 
-  type = 'scatter',        
-  mode = 'lines+markers'    
-) %>%
-  layout(
-    title = "Figure 5:Mean Salary by Work Year and Employment Type",
-    xaxis = list(title = "Work Year"),
-    yaxis = list(title = "Mean Salary (USD)"),
-    legend = list(title = list(text = "Employment Type"))
-  )
+plot <- ggplot(year_company_data, aes(x = work_year, y = mean_salary, color = company_size, group = company_size)) +
+  geom_line(size = 1.2) +  
+  geom_point(size = 3) + 
+  labs(
+    title = "Mean Salary by Work Year and Company Size",
+    x = "Work Year",
+    y = "Mean Salary (USD)",
+    color = "Company Size") +
+  theme_minimal()
+interactive_plot <- ggplotly(plot)
 interactive_plot
 ```
-<b>Figure 5:</b>The average salary of FT shows a steady growth trend, rising year by year from 2020 to 2024. In 2021, the average salary of CT shows a clear peak, which is much higher than other years. The salary levels of the two employment types of FL and PT remain relatively low throughout the period. The salary peak of CT in 2021 may reflect a temporary surge in demand in certain specific industries or economic environments, such as an increase in project-based work.
+L: more than 250 employees, M: 50 to 250 employees, S: less than 50 employees
+
+

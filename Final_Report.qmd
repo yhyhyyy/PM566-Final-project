@@ -98,17 +98,20 @@ ggplot(salary_by_year, aes(x = work_year, y = mean_salary)) +
 
 ```{r, echo=FALSE}
 library(knitr)
+library(dplyr)
+library(ggplot2)
 ggplot(salaries_data, aes(x = company_size, y = salary_in_usd, fill = company_size)) +
   geom_boxplot() +
-  labs(title = "Figure4:Company Size and Salary", 
-       x = "Company Size", 
-       y = "Salary (USD)",
-       caption = "L: more than 250 employees\nM: 50 to 250 employees\nS: less than 50 employees") +
+  labs(
+    title = "Figure4: Company Size and Salary", 
+    x = "Company Size", 
+    y = "Salary (USD)",
+    caption = "L: more than 250 employees\nM: 50 to 250 employees\nS: less than 50 employees"
+  ) +
   theme_minimal() +
   theme(
     plot.caption = element_text(size = 10, face = "italic", hjust = 0)
   )
-
 salary_stats_by_company_size <- salaries_data %>%
   group_by(company_size) %>% 
   summarise(
@@ -120,8 +123,11 @@ salary_stats_by_company_size <- salaries_data %>%
     count = n()  
   ) %>%
   arrange(desc(mean_salary)) 
+kable(
+  t(salary_stats_by_company_size), 
+  caption = "Table1: Salary Statistics by Company Size (Mean, Median, SD, Min, Max, Count)"
+)
 
-kable(t(salary_stats_by_company_size), caption = "Table1:Salary Statistics by Company Size (Mean, Median, SD, Min, Max, Count)")
 ```
 <b>Figure 4:</b>Medium-sized companies have the highest average salary (\$160,086.66) among all company sizes, followed by large companies with an average salary of \$152,341.53. Small companies pay significantly less, with an average salary of \$87,671.74. Medium-sized companies exhibit the widest salary range, with a minimum of \$15,000 and a maximum of \$800,000. Large companies have a narrower salary range, with a maximum salary of \$423,000. Small companies show the most limited salary range and lower variability, as evidenced by their lower standard deviation.
 
@@ -138,7 +144,8 @@ ggplot(interaction_analysis, aes(x = employment_type, y = mean_salary, fill = em
     title = "Figure 5:Mean Salary by Employment Type and Company Size",
     x = "Employment Type",
     y = "Mean Salary (USD)",
-    caption = "L: more than 250 employees\nM: 50 to 250 employees\nS: less than 50 employees") +
+    caption = "L: >250 employees        CT: Contract\nM: 50-250 employees    FL: Freelance\nS: <50 employees         FT: Full-time\n                                      PT: Part-time"
+  ) +
   theme_minimal() +
   theme(
     plot.caption = element_text(size = 10, face = "italic", hjust = 0)
@@ -151,20 +158,59 @@ year_employment_data <- salaries_data %>%
   group_by(work_year, employment_type) %>%
   summarise(mean_salary = mean(salary_in_usd, na.rm = TRUE), .groups = "drop")
 
-interactive_plot <- plot_ly(
-  year_employment_data,
-  x = ~work_year,     
-  y = ~mean_salary,         
-  color = ~employment_type, 
-  type = 'scatter',        
-  mode = 'lines+markers'    
-) %>%
-  layout(
-    title = "Figure 6:Mean Salary by Work Year and Employment Type",
-    xaxis = list(title = "Work Year"),
-    yaxis = list(title = "Mean Salary (USD)"),
-    legend = list(title = list(text = "Employment Type")) 
+# 使用 ggplot2 绘制静态折线图
+ggplot(year_employment_data, aes(x = work_year, y = mean_salary, color = employment_type, group = employment_type)) +
+  geom_line(size = 1.2) +  # 折线
+  geom_point(size = 3) +   # 数据点
+  labs(
+    title = "Figure 6: Mean Salary by Work Year and Employment Type",
+    x = "Work Year",
+    y = "Mean Salary (USD)",
+    color = "Employment Type",
+    caption = "CT: Contract\nFL: Freelance\nFT: Full-time\nPT: Part-time") +
+  theme_minimal() +
+  theme(
+    plot.caption = element_text(size = 10, face = "italic", hjust = 0)
   )
-interactive_plot
+
 ```
 <b>Figure 6:</b>The average salary of FT shows a steady growth trend, rising year by year from 2020 to 2024. In 2021, the average salary of CT shows a clear peak, which is much higher than other years. The salary levels of the two employment types of FL and PT remain relatively low throughout the period. The salary peak of CT in 2021 may reflect a temporary surge in demand in certain specific industries or economic environments, such as an increase in project-based work.
+
+```{r, echo=FALSE}
+year_company_data <- salaries_data %>%
+  group_by(work_year, company_size) %>%
+  summarise(mean_salary = mean(salary_in_usd, na.rm = TRUE), .groups = "drop")
+
+ggplot(year_company_data, aes(x = work_year, y = mean_salary, color = company_size, group = company_size)) +
+  geom_line(size = 1.2) +  
+  geom_point(size = 3) + 
+  labs(
+    title = "Figure7: Mean Salary by Work Year and Company Size",
+    x = "Work Year",
+    y = "Mean Salary (USD)",
+    color = "Company Size",
+    caption = "L: more than 250 employees\nM: 50 to 250 employees\nS: less than 50 employees"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.caption = element_text(size = 10, face = "italic", hjust = 0)
+  )
+
+
+```
+From 2021 to 2024, the average salary of small companies is much lower than that of medium and large companies. The salary curve of medium and large companies is basically the same over time, and the growth trend is also greater than that of small companies. This shows that in the field of artificial intelligence, medium and large companies are better than small companies in terms of salary level and development prospects.
+
+# Conclusion and Summary
+
+## Conclusion
+According to in-depth analysis, there are three main factors that affect salaries in the AI field: years of work experience, experience level, and employee type. As the field matures over time, salaries gradually increase, and as experience levels increase, from novice to department head, salaries also increase. Compared with part-time and freelance jobs, full-time jobs and contract workers are more professional and have higher barriers to entry, so salaries are relatively high.
+
+When studying the interaction between different factors that affect salary, I found something interesting. First, when analyzing the relationship between company size and experience level, small companies' overall income level is not as good as that of medium and large companies. However, the average salary of their contract workers is higher than that of full-time employees, which is the opposite of medium and large companies. After research, I think there are two main reasons for this difference. On the one hand, contract workers' positions usually lack stability, have no long-term employment security, and face higher career risks. In order to attract talents, small companies will offer higher salaries to compensate for this uncertainty. In addition, small companies may need contract workers to quickly fill technical vacancies for specific projects, so they are more willing to pay a premium. On the other hand, medium and large companies often offer attractive salaries in full-time positions to attract top talents, and increase total compensation through benefits, bonuses, and equity incentives. Contract workers usually cannot enjoy these additional benefits and their total income is lower than that of full-time employees.
+
+Second, the interaction between years of work experience and company size is also worth noting. From 2021 to 2024, the average salary of all companies has increased, and the growth rate of medium and large companies is greater. However, in 2021, the salaries of medium and large companies have all declined, while small companies have grown rapidly in this year. This may be because in 2021, due to the epidemic, economic growth was slow, and medium and large companies took measures to cut salaries, while small companies, due to their small size, had a steady increase in average salaries.
+
+## Summary
+This report mainly discusses the factors that affect wages in the field of artificial intelligence and the relationship between these factors. After analysis, interesting results were obtained, which also provides better data guidance for those who are about to work in the field of artificial intelligence. However, in order to obtain more accurate results and predict future salary trends in the field of artificial intelligence, more data and more accurate models are needed in the future.
+
+# Reference
+1. The Global AI, ML, Data Science Salary Index for 2024. (n.d.). aijobs.net. https://aijobs.net/salaries/

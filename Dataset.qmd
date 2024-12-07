@@ -1,0 +1,16 @@
+---
+title: "Dataset"
+---
+# Introduction
+The dataset used in this analysis was obtained from the website [AI Jobs Salaries](https://aijobs.net/salaries/download/), which provides detailed salary data for various roles in the AI and tech industry. The dataset includes variables such as work year, experience level, job titles, salaries in local currencies and converted to USD, remote work ratios, company size, and employee location.
+
+# Preview
+```{r,echo=FALSE}
+library(knitr)
+salaries_data <- read.csv("salaries.csv")
+kable(
+  head(salaries_data), 
+  caption = "Table: First Six Rows of the Salaries Dataset",
+  format = "html"
+)
+```
