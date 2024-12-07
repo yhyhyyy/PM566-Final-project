@@ -1,5 +1,5 @@
 ---
-title: "Final Report"
+title: "Final Report-Salaries in the field of artificial intelligence"
 author: "Haoyu Yu"
 format: pdf
 editor: visual

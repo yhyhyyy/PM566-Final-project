@@ -23,6 +23,7 @@ salaries_data$remote_ratio <- as.factor(salaries_data$remote_ratio)
 salaries_data$company_size <- as.factor(salaries_data$company_size)
 salaries_data$employee_residence <- as.factor(salaries_data$employee_residence)
 ```
+# Salaries in the field of artificial intelligence
 
 ## Description
 
